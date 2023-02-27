@@ -77,7 +77,7 @@ int appendFromArray(nNode *list, int *array, int len) {
  * void print(nNode *list) 
  * Function prints list from left to right 
  * Parameters: 
- *      nNode list  
+ *      nNode *list  
  * Returns:
  *      no returning values
 */ 
@@ -88,6 +88,148 @@ void print(nNode *list) {
     }
 }
 
+
+/*
+ * int lenght(nNode *list)
+ * Function traverses list and counts nodes (lenght)
+ * Parameters: 
+ *      nNode *list - list to find lenght of 
+ * Returns: 
+ *      int lenght - lenght of given list
+*/
+int length(nNode *list) {
+    int lenght = 0;
+    for (;list; list=list->next, lenght++);
+    return lenght;
+}
+
+
+/* NOT TESTED YET ! NOT TESTED YET ! NOT TESTED YET 
+ * nNode *findByValue(nNode *list, int value) 
+ * Function searches node with given value in list
+ * Parameters: 
+ *      nNode *list - list to find lenght of 
+ *      int value - value of node to search in list
+ * Returns: 
+ *      nNode list - node with given value OR NULL if no node with such value
+*/
+nNode *findByValue(nNode *list, int value) {
+    while (list->next && list->value != value) 
+        list = list->next;
+    
+    if (list->value == value)
+        return list;
+
+    else return NULL;
+}
+
+
+/*
+ * nNode *findByIndex(nNode *list, int index)
+ * Function searches node at given index in list
+ * Parameters: 
+ *      nNode *list - list to find lenght of 
+ *      int index - index of list to search node at 
+ * Returns: 
+ *      nNode list - node at given index OR NULL if no such index
+*/
+nNode *findByIndex(nNode *list, int index) {
+    int k = 0;
+    while (list->next && k < index) {
+        list = list->next;
+        k++;
+    }
+    if (k == index)
+        return list;
+    else return NULL;
+}
+
+
+/*
+ * nNode *insert(nNode *list, int value, int index)
+ * ! If inserting at index 0, assign returned value to list 
+ * Function inserts given value at given index in list 
+ * Parameters: 
+ *      nNode *list - list to insert in
+ *      int value - value to insert in list
+ *      int index - index in list where to insert value 
+ * Returns:
+ *      nNode newNode 
+*/
+nNode *insert(nNode *list, int value, int index) {
+    nNode *newNode = allocateNode(value);
+    if (index == 0 || !list)
+        newNode->next = list;
+
+    else {
+        nNode *tmp = findByIndex(list, index-1);
+        if (tmp) list = tmp;
+
+        newNode->next = list->next;
+        list->next = newNode;
+    }
+    return newNode;
+}
+
+
+/*
+ * int indexOf(nNode *list, int value)
+ * Function 
+ * Parameters: 
+ *      nNode *list - list to insert in
+ *      int value - value to search in list
+ * Returns:
+ *      int i - index of node with given value in list
+*/
+int indexOf(nNode *list, int value) {
+    int i = 0;
+    while (list && list->value != value) {
+        list = list->next;
+        i++;
+    } 
+    
+    if (list->value == value)
+        return i;
+    else return -1;
+}
+
+nNode *delete(nNode *list, int index) {
+
+    nNode *tmp = findByIndex(list, index-1);
+    if (tmp) list = tmp;
+
+    
+    return list;
+}
+
+
+nNode *removeFirst(nNode *list, int value) {
+    int index = indexOf(list, value);
+    
+    if (index == 0) {
+        if (list->next) {
+            nNode *tmp = list->next; 
+            free(list);
+            return tmp;
+        }
+        else return NULL;
+    }
+    else if (list && index) {
+
+    }
+}
+
+
+
+
+
+
+/*
+sort
+listToArray
+merge list;
+insert list;
+*/
 
 int main() {
 
@@ -100,47 +242,32 @@ int main() {
     /* expected output: * list print: 1 2 3 5 */
 
     int array[] = {6, 7, 8, 9, 10}; // 5
-    printf(" Appended from array 6, 7, 8, 9, 10\n   * list print: ");
+    printf(" \n Appended from array 6, 7, 8, 9, 10\n   * list print: ");
     appendFromArray(head, &array, 5);
     print(head);
     /* expected output: * list print: 1 2 3 5 6 7 8 9 10*/
 
+    printf("\n Lenght: %d", length(head));
+    /*expected output: 9 */
 
-    /* 
-    insert(head, 4, 3);
-    printf("\n Inserted 4 at index 2\n   * list print: ");
+    printf(" \n Inserted 100 at 0, 1000 at lenght, 500 at 5\n   * list print: ");
+    head = insert(head, 100, 0);
+    insert(head, 500, 5);
+    insert(head, 1000, length(head));
     print(head);
-    expected output: * list print: 1 2 3 4 5 */
+    /* expected output: 100 1 2 3 5 6 500 7 8 9 10 1000 */
 
-    /* 
-    insert(head, 90, 0);
-    printf("\n Inserted 90 at index 0\n   * list print: ");
-    print(head);
-    expected output: * list print: 90 1 2 3 4 5 */
+    printf("index of 100, 500, 1000 \n   *  %d %d %d ", indexOf(head, 100), indexOf(head, 500), indexOf(head, 1000));
+    /* expected output: 0 5 11  */
+    printf(" \n index of 8, 9, 10 \n   *  %d %d %d ", indexOf(head, 8), indexOf(head, 9), indexOf(head, 10));
+    /* expected output: 8 9 10 */
 
-    /* 
-    insert(head, 90, 6);
-    printf("\n Inserted 90 at index 6\n   * list print: ");
+    head = removeFirst(head, 100);
+    head = removeFirst(head, 500);
+    head = removeFirst(head, 1000);
+    printf(" \n Removed 100, 500, 1000\n   * list print: ");
     print(head);
-    expected output: * list print: 90 1 2 3 4 5 90 */
-
-    /* 
-    removeFirst(head, 1, 0);
-    printf("\n Removed 1 \n   * list print: ");
-    print(head);
-    expected output: * list print: 90 2 3 4 5 90 */
-
-    /* 
-    removeFirst(head, 2, 0);
-    printf("\n Removed 2 \n   * list print: ");
-    print(head);
-    expected output: * list print: 90 3 4 5 90 */
-
-    /* 
-    removeFirst(head, 90, 0);
-    printf("\n Removed 90 \n   * list print: ");
-    print(head);
-    expected output: * list print: 3 4 5 90 */
+    /* expected output: 1 2 3 5 6 7 8 9 10 */
 
 
     return 0;
