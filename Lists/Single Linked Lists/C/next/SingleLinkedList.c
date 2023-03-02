@@ -27,7 +27,6 @@ nNode* allocateNode(int value) {
 
 
 /* 
- * int append(nNode *list, int value) 
  * Function appends new node at the end of list
  * Parameters: 
  *      nNode *list - pointer to head of the list
@@ -54,7 +53,6 @@ int append(nNode *list, int value) {
 
 
 /* 
- * int appendFromArray(nNode *list, int *array, int len)
  * Function appends list from array, (appends each value in array)
  * Parameters: 
  *      nNode *list - pointer to head of the list
@@ -74,7 +72,6 @@ int appendFromArray(nNode *list, int *array, int len) {
 
 
 /* 
- * void print(nNode *list) 
  * Function prints list from left to right 
  * Parameters: 
  *      nNode *list  
@@ -90,7 +87,6 @@ void print(nNode *list) {
 
 
 /*
- * int lenght(nNode *list)
  * Function traverses list and counts nodes (lenght)
  * Parameters: 
  *      nNode *list - list to find lenght of 
@@ -105,7 +101,6 @@ int length(nNode *list) {
 
 
 /*
- * nNode *findByValue(nNode *list, int value) 
  * Function searches node with given value in list
  * Parameters: 
  *      nNode *list - list to find lenght of 
@@ -125,7 +120,6 @@ nNode *findByValue(nNode *list, int value) {
 
 
 /*
- * nNode *findByIndex(nNode *list, int index)
  * Function searches node at given index in list
  * Parameters: 
  *      nNode *list - list to find lenght of 
@@ -146,7 +140,6 @@ nNode *findByIndex(nNode *list, int index) {
 
 
 /*
- * nNode *insert(nNode *list, int value, int index)
  * ! If inserting at index 0, assign returned value to list 
  * Function inserts given value at given index in list 
  * Parameters: 
@@ -173,7 +166,6 @@ nNode *insert(nNode *list, int value, int index) {
 
 
 /*
- * int indexOf(nNode *list, int value)
  * Function 
  * Parameters: 
  *      nNode *list - list to insert in
@@ -194,9 +186,7 @@ int indexOf(nNode *list, int value) {
 }
 
 
-
 /*
- * nNode* delete(nNode* list, int index) 
  * ! If deleting at index 0, assign returned value to list 
  * Function deletes value at given index in list 
  * Parameters: 
@@ -223,7 +213,6 @@ nNode* delete(nNode* list, int index) {
 
 
 /*
- * nNode* delete(nNode* list, int index) 
  * ! If removing at index 0, assign returned value to list 
  * Function removes value at list 
  * Parameters: 
@@ -255,7 +244,7 @@ nNode *removeFirst(nNode *list, int value) {
 }
 
 
-/*
+/* 
  * Function swaps two values in list 
  * Parameters: 
  *      nNode *list - list to swap values in
@@ -271,7 +260,7 @@ void swap(nNode *list, int index1, int index2) {
 }
 
 
-/*
+/* 
  * Function that  sorts list
  * Parameters: 
  *      nNode *list - list to sort
@@ -284,7 +273,7 @@ void bubbleSort(nNode *list) {
                 swap(list, j, j + 1);
 }
 
-/*
+/* 
  * Function that copies list elements to array 
  * Parameters: 
  *      nNode *list - list to sort
@@ -302,11 +291,40 @@ int* listToArray(nNode *list) {
     return array;
 }
 
+/* 
+ * Function that merges two lists in first 
+ * Parameters: 
+ *      nNode *list - base list, second list will be appended to it 
+ *      nNode *list2 - list that will be appended to list 
+*/ 
+void mergeLists(nNode *list, nNode *list2) {
+    if (list != list2) {
 
-/*
-merge list;
-insert list;
-*/
+        while (list2->next) {
+            list2 = list2->next; 
+            append(list, list2->value);
+        }  
+    }
+}
+
+
+/* 
+ * Function that merges two lists in first 
+ * Parameters: 
+ *      nNode *list - base list, second list will be inserted to it 
+ *      nNode *list2 - list that will be inserted to list 
+ *      int index - index in first list after which will be inserted list2
+*/ 
+nNode* insertList(nNode *list, nNode *list2, int index) {
+    if (list != list2) {
+        while (list2->next) {
+            list2 = list2->next; 
+            list = insert(list, list2->value, index);
+        }  
+    }
+    return list;
+}
+
 
 int main() {
 
@@ -377,7 +395,21 @@ int main() {
         * 5 5 6 7 8 9 76 900  
         * 5 5 6 7 8 9 76 900 */
 
+    nNode *head1 = allocateNode(0);
+    appendFromArray(head1, &array, 5);
+    printf(" \n Created second list \n   * list print: ");
+    print(head1);
+    /* expected output: 0 6 7 8 9 10 */
 
+    mergeLists(head, head1);
+    printf(" \n Merged lists \n   * list print: ");
+    print(head);
+    /* expected output: 5 5 6 7 8 9 76 900 6 7 8 9 10  */
+
+    insertList(head, head1, 1);
+    printf(" \n Inserted head1 at index 1 in head \n   * list print: ");
+    print(head);
+    /* expected output: 5 6 7 8 9 10 5 6 7 8 9 76 900 6 7 8 9 10 */
 
     return 0;
 }
