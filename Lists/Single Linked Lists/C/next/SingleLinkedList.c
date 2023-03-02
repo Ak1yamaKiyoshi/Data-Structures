@@ -194,45 +194,57 @@ int indexOf(nNode *list, int value) {
 }
 
 
-// delete element by index
+
+/*
+ * nNode* delete(nNode* list, int index) 
+ * ! If deleting at index 0, assign returned value to list 
+ * Function inserts given value at given index in list 
+ * Parameters: 
+ *      nNode *list - list to delete from
+ *      int index - index in list from to delete value 
+ * Returns:
+ *      nNode list
+*/
 nNode* delete(nNode* list, int index) {
-    int len = length(list);
-    if (len == 1 && index == 0) {
-        free(list);
-        return NULL;
+    if (list) {
+        int len = length(list);
+        nNode *tmp = findByIndex(list, index-2);
+        if (index <= len && index > 0) {
+            nNode *tmp2 = tmp->next;
+            tmp->next = tmp2->next;
+            free(tmp2); 
+        }
+        else if (index == 0) 
+            return list->next;
     }
 
-    if (index > -1 && index < len) {
-        nNode *tmp, *tmp2;
-        int i;
-        for (tmp = list, i = len - 1; i > index + 1; i--, tmp=tmp->next);
-        tmp2 = tmp->next;
-        tmp2->next = tmp->next->next;
-        free(tmp2);
-    }
     return list;
 }
 
 
+
 nNode *removeFirst(nNode *list, int value) {    
-    nNode* tmp = list;
-    nNode* tmp2 = NULL;
     if (list) {
-        while (tmp->next && tmp->value != value) 
+        nNode *tmp = list;
+        nNode *tmp2;
+
+        while (tmp->next && tmp->value != value) {
             tmp2 = tmp;
             tmp = tmp->next;
-        
-        if (tmp2 && tmp) {
+        }
+
+        // if node with target value at index 0 
+        if ( list->value == tmp->value ) return list->next;
+
+        if (tmp && tmp->value == value) {
             
             tmp2->next = tmp->next;
-            free(tmp);
-            return list;
-        }
-        else {
-            return list->next;
+            free(tmp); 
         }
     }
+
     return list;
+
 }
 
 
@@ -276,12 +288,21 @@ int main() {
     printf(" \n index of 8, 9, 10 \n   *  %d %d %d ", indexOf(head, 8), indexOf(head, 9), indexOf(head, 10));
     /* expected output: 8 9 10 */
 
-    head = removeFirst(head, 100);
-    head = removeFirst(head, 500);
-    head = removeFirst(head, 1000);
-    printf(" \n Removed 100, 500, 1000\n   * list print: ");
+    head = delete(head, 0);
+    delete(head, 5);
+    delete(head, length(head));
+    printf(" \n Deleted at indicies: 0, 4, length(head)\n   * list print: ");
     print(head);
     /* expected output: 1 2 3 5 6 7 8 9 10 */
+
+    head = removeFirst(head, 100); // shoud not remove anything 
+    head = removeFirst(head, 10);
+    head = removeFirst(head, 1);
+    head = removeFirst(head, 2);
+    head = removeFirst(head, 3);
+    printf(" \n Removed 1, 2, 3, 10 | not removed (bc not exists) 100\n   * list print: ");
+    print(head);
+    /* expected output: 5 6 7 8 9 */
 
 
     return 0;
