@@ -104,7 +104,7 @@ int length(nNode *list) {
 }
 
 
-/* NOT TESTED YET ! NOT TESTED YET ! NOT TESTED YET 
+/*
  * nNode *findByValue(nNode *list, int value) 
  * Function searches node with given value in list
  * Parameters: 
@@ -198,10 +198,10 @@ int indexOf(nNode *list, int value) {
 /*
  * nNode* delete(nNode* list, int index) 
  * ! If deleting at index 0, assign returned value to list 
- * Function inserts given value at given index in list 
+ * Function deletes value at given index in list 
  * Parameters: 
  *      nNode *list - list to delete from
- *      int index - index in list from to delete value 
+ *      int index - index in list
  * Returns:
  *      nNode list
 */
@@ -222,7 +222,16 @@ nNode* delete(nNode* list, int index) {
 }
 
 
-
+/*
+ * nNode* delete(nNode* list, int index) 
+ * ! If removing at index 0, assign returned value to list 
+ * Function removes value at list 
+ * Parameters: 
+ *      nNode *list - list to remove from
+ *      int value - value in list   
+ * Returns:
+ *      nNode list
+*/
 nNode *removeFirst(nNode *list, int value) {    
     if (list) {
         nNode *tmp = list;
@@ -242,17 +251,59 @@ nNode *removeFirst(nNode *list, int value) {
             free(tmp); 
         }
     }
-
     return list;
-
 }
 
 
+/*
+ * Function swaps two values in list 
+ * Parameters: 
+ *      nNode *list - list to swap values in
+ *      int index1 - value1 to swap 
+ *      int index2 - value2 to swap
+*/
+void swap(nNode *list, int index1, int index2) {
+    nNode *tmp1 = findByIndex(list, index1);
+    nNode *tmp2 = findByIndex(list, index2);
+    int tmp = tmp1->value;
+    tmp1->value = tmp2->value;
+    tmp2->value = tmp;
+}
 
 
 /*
-sort
-listToArray
+ * Function that  sorts list
+ * Parameters: 
+ *      nNode *list - list to sort
+*/
+void bubbleSort(nNode *list) {
+    int len = length(list);
+    for (int i = 0; i < len - 1; i++)
+        for (int j = 0; j < len - i - 1; j++)
+            if (findByIndex(list, j)->value > findByIndex(list, j+1)->value)
+                swap(list, j, j + 1);
+}
+
+/*
+ * Function that copies list elements to array 
+ * Parameters: 
+ *      nNode *list - list to sort
+ * Returns: 
+ *      int *array - array with list values lenght of list
+*/ 
+int* listToArray(nNode *list) {
+    int len = length(list);
+    int *array = (int*)calloc(sizeof(int), len);
+
+    nNode *tmp = list;
+    for (int i = 0; i < len; i++, tmp = tmp->next)
+        array[i] = tmp->value;
+
+    return array;
+}
+
+
+/*
 merge list;
 insert list;
 */
@@ -303,6 +354,29 @@ int main() {
     printf(" \n Removed 1, 2, 3, 10 | not removed (bc not exists) 100\n   * list print: ");
     print(head);
     /* expected output: 5 6 7 8 9 */
+
+    append(head, 900);
+    append(head, 76);
+    append(head, 5);
+    printf(" \n Appended 900,76,5\n   * list print: ");
+    print(head);
+    /* expected output: 5 6 7 8 9 900 76 5 */
+
+    bubbleSort(head);
+    printf(" \n Sorted \n   * list print: ");
+    print(head);
+    /* expected output: 5 5 6 7 8 9 76 900 */
+
+    int *array1 = listToArray(head);
+    printf(" \n list to array \n   * array print: ");
+    for (int i = 0; i < length(head); i++) printf("%d ", array1[i]);
+    printf(" \n   * list  print: ");
+    print(head);
+    free(array1);
+    /*  expected output:
+        * 5 5 6 7 8 9 76 900  
+        * 5 5 6 7 8 9 76 900 */
+
 
 
     return 0;
