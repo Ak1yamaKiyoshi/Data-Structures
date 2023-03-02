@@ -5,7 +5,7 @@
 // Node structure
 struct Node {
     int value; // Node value 
-    struct Node *next; // Pointer to previous element
+    struct Node *next; // Pointer to next element
 } *head = NULL; // Head of list
 
 typedef struct Node nNode;
@@ -193,33 +193,47 @@ int indexOf(nNode *list, int value) {
     else return -1;
 }
 
-nNode *delete(nNode *list, int index) {
 
-    nNode *tmp = findByIndex(list, index-1);
-    if (tmp) list = tmp;
+// delete element by index
+nNode* delete(nNode* list, int index) {
+    int len = length(list);
+    if (len == 1 && index == 0) {
+        free(list);
+        return NULL;
+    }
 
-    
+    if (index > -1 && index < len) {
+        nNode *tmp, *tmp2;
+        int i;
+        for (tmp = list, i = len - 1; i > index + 1; i--, tmp=tmp->next);
+        tmp2 = tmp->next;
+        tmp2->next = tmp->next->next;
+        free(tmp2);
+    }
     return list;
 }
 
 
-nNode *removeFirst(nNode *list, int value) {
-    int index = indexOf(list, value);
-    
-    if (index == 0) {
-        if (list->next) {
-            nNode *tmp = list->next; 
-            free(list);
-            return tmp;
+nNode *removeFirst(nNode *list, int value) {    
+    nNode* tmp = list;
+    nNode* tmp2 = NULL;
+    if (list) {
+        while (tmp->next && tmp->value != value) 
+            tmp2 = tmp;
+            tmp = tmp->next;
+        
+        if (tmp2 && tmp) {
+            
+            tmp2->next = tmp->next;
+            free(tmp);
+            return list;
         }
-        else return NULL;
+        else {
+            return list->next;
+        }
     }
-    else if (list && index) {
-
-    }
+    return list;
 }
-
-
 
 
 
