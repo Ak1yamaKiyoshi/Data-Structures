@@ -326,6 +326,57 @@ nNode* insertList(nNode *list, nNode *list2, int index) {
 }
 
 
+/* 
+ * Function that finds first max value of list
+ * Parameters: 
+ *      nNode *list - list to find value in
+ * Returns: 
+ *      int maxValue - first maximum value of the list  
+*/ 
+int max(nNode *list) {
+    int maxValue = NULL;
+    if (list) 
+        for ( ;list; list=list->next) 
+            if (!maxValue || maxValue < list->value)
+                maxValue = list->value;
+    return maxValue;
+}
+
+
+/* 
+ * Function that finds first min value of list
+ * Parameters: 
+ *      nNode *list - list to find value in
+ * Returns: 
+ *      int minValue - first minimum value of the list  
+*/ 
+int min(nNode *list) {
+    int minValue = NULL;
+    if (list) 
+        for ( ;list; list=list->next) 
+            if (!minValue || minValue > list->value)
+                minValue = list->value;
+    return minValue;
+}
+
+
+/* 
+ * Function that removes all elements from the list
+ * Parameters: 
+ *      nNode *list - list to clear
+*/ 
+nNode* clear(nNode* list) {
+    nNode* tmp = list;
+    while (list != NULL) {
+        tmp = list->next;
+        free(list);
+        list = tmp;
+    }
+    return list;
+}
+
+
+
 int main() {
 
     nNode *head = allocateNode(1);
@@ -411,5 +462,11 @@ int main() {
     print(head);
     /* expected output: 5 6 7 8 9 10 5 6 7 8 9 76 900 6 7 8 9 10 */
 
+    int listMax = max(head);
+    int listMin = min(head);
+    printf(" \n   * list min %d, list max %d ", listMin,listMax);
+
+    head = clear(head);
+    head1 = clear(head1);
     return 0;
 }
