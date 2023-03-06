@@ -20,6 +20,10 @@ typedef struct Node nNode;
 */ 
 nNode* allocateNode(int value) {
     nNode *newNode = (nNode*)malloc(sizeof(nNode)); // Allocate Node to append
+    if (newNode == NULL) {
+        printf("Error: Failed to allocate memory.\n");
+        return NULL;
+    }
     newNode->value = value; 
     newNode->next = NULL; // because we assert that last node in list will have NULL as next pointer, so we know where list ends, otherwise, there is now way to know that
     return newNode;
@@ -36,7 +40,7 @@ nNode* allocateNode(int value) {
  *      if function successeds, list pointer would be changed
 */ 
 int append(nNode *list, int value) {
-    struct nNode *newNode = allocateNode(value);
+    nNode *newNode = allocateNode(value);
     if (!newNode) return 0; 
 
     if (list) { // if list is not empty 
