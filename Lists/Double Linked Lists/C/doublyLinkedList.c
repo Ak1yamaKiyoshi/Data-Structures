@@ -417,21 +417,15 @@ nNode* delete(nNode* list, int index) {
  * @return 
 */
 nNode *removeFirst(nNode *list, int value) {    
+    list = moveToValue(list, value);
     if (list) {
-        nNode *tmp = list;
-        nNode *tmp2;
-        while (tmp->next && tmp->value != value) {
-            tmp2 = tmp;
-            tmp = tmp->next;
-        }
-        // if node with target value at index 0 
-        if ( list->value == tmp->value ) return list->next;
-
-        if (tmp && tmp->value == value) {
-            tmp2->next = tmp->next;
-            free(tmp); 
-        }
-    }
+        nNode* tmp1 = list->prev;
+        nNode* tmp2 = list->next;
+        unlinkMiddleNode(tmp1, list, tmp2);
+        free(list);
+        if (tmp1) list=tmp1;
+        if (tmp2) list=tmp2;
+    } else return NULL;
     return list;
 }
 
@@ -441,15 +435,12 @@ nNode *removeFirst(nNode *list, int value) {
  * @param list list to pop from 
 */
 int popFirst (nNode* list) {
-    list = moveFirst(list);
-    if (list) {
-        int value = list->value;
-        nNode* tmp2 = list->next;
-        free(list);
-        tmp2->prev = NULL;
-        list = tmp2;
+    nNode *node = moveFirst(list);
+    if (node) {
+        int value = node->value;
+        delete(list, 0);
         return value;
-    } else return NULL;
+    }
 }
 
 
@@ -458,18 +449,14 @@ int popFirst (nNode* list) {
  * @param list list to pop from 
 */
 int popLast (nNode* list) {
-    list = moveLast(list);
-    if (list) {
-        int value = list->value;
-        nNode* tmp1 = list->prev;
-        free(list);
-        tmp1->next = NULL;
-        list = tmp1->prev;
+    int len=length(list);
+    nNode *node = moveLast(list);
+    if (node) {
+        int value = node->value;
+        delete(list, len-1);
         return value;
-    } else return NULL;
-
+    }
 }
-
 
 /*
  * Removes all elements from the list 
@@ -477,7 +464,6 @@ int popLast (nNode* list) {
 */
 nNode* clear(nNode* list) {
     if (list != NULL) {
-
     list = moveFirst(list);
     nNode* tmp = list;
     while (list != NULL) {
@@ -587,12 +573,17 @@ void test() {
     printf("|");
     bubbleSort(list);
     print(list); /* expected output -4 -3 -2 -1 0 1 2 3 */
-
-
-
-
-
-
+    printf("|");
+    list = delete(list, 0);
+    list = delete(list, 6);
+    list = delete(list, 3);
+    print(list); /* expected output -3 -2 -1 1 2 */
+    printf("|");
+    list = removeFirst(list, -3);
+    list = removeFirst(list, -1);
+    list = removeFirst(list, 2);
+    print(list); /* expected output -2 1*/
+    //printf("=%d =%d ", popFirst(list), popLast(list));
 
 
 }
@@ -605,3 +596,37 @@ int main() {
 
     return 0;
 }
+
+
+
+//nNode*  allocateNode          (int value);
+//void    unlinkMiddleNode      (nNode *a, nNode *b, nNode *c);
+//void    link3                 (nNode *a, nNode *b, nNode *c);
+//void    link2                 (nNode *a, nNode *b) ;
+//nNode*  moveLast              (nNode *list) ;
+//nNode*  moveFirst             (nNode *list) ;
+//nNode*  moveToIndex           (nNode *list, int index);
+//nNode*  moveToValue           (nNode *list, int value) ;
+//void    swap                  (nNode *list, int index1, int index2) ;
+//int     length                (nNode *list);
+//int     indexOf               (nNode *list, int value);
+//nNode*  max                   (nNode *list);
+//nNode*  min                   (nNode *list);
+//int*    listToArray           (nNode *list);
+//int*    slice                 (nNode* list, int begin, int end);
+//void    reverse               (nNode *list) ;
+//nNode*  insertFirst           (nNode *list, int value);
+//nNode*  append                (nNode *list, int value) ;
+//nNode*  insert                (nNode *list, int value, int index) ;
+//int     insertLastFromArray   (nNode *list, int *array, int len);
+//int     insertFirstFromArray  (nNode *list, int *array, int len);
+//int     mergeLists            (nNode *list, nNode *list2) ;
+nNode*  insertList            (nNode *list, nNode *list2, int index) ;
+//nNode*  delete                (nNode* list, int index) ;
+//nNode*  removeFirst           (nNode *list, int value) ;
+int     popFirst              (nNode* list) ; // !!!!!!!!!!!!!!!!!!!!
+int     popLast               (nNode* list) ; // !!!!!!!!!!!!!!!!!!!!
+//nNode*  clear                 (nNode* list);
+//int     bubbleSort            (nNode *list);
+//void    print                 (nNode *list);
+//void    printBackwards        (nNode *list);
