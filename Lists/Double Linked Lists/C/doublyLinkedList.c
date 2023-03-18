@@ -378,7 +378,7 @@ int mergeLists(nNode *list, nNode *list2) {
  * @param  index index in first list after which will be inserted list2 
 */ 
 nNode* insertList(nNode *list, nNode *list2, int index) {
-    list = moveToIndex(list, index);
+    list = moveFirst(list);
     list2 = moveFirst(list2);
     if (list != list2) {
         while (list != NULL && list2 != NULL && list2->next) {
@@ -584,7 +584,7 @@ void test() {
     list = removeFirst(list, 2);
     print(list); /* expected output -2 1*/
     //printf("=%d =%d ", popFirst(list), popLast(list));
-
+    list = clear(list);
 
 }
 

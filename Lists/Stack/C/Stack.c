@@ -30,6 +30,17 @@ nNode* allocateNode(int value) {
 }
 
 
+/*
+ * Move list pointer to last element element of the list
+ * @param *list list pointer to move 
+ * @return list pointer on last element
+*/
+nNode* moveLast(nNode *list) {
+    while (list && list->next) list = list->next;
+    return list;
+}
+
+
 /* 
  * Function appends new node at the end of list
  * Parameters: 
@@ -44,8 +55,7 @@ int append(nNode *list, int value) {
     if (!newNode) return 0; 
 
     if (list) { // if list is not empty 
-        while (list->next) // While next node is not null
-            list = list->next; // Move pointer to next node
+        moveLast(list)->next = newNode
         list->next = newNode; // append new node to last node of the list
         return 1;
     } else { // if list is NULL
@@ -71,6 +81,7 @@ void print(nNode *list) {
 }
 
 
+
 /*
  * Function traverses list and counts nodes (lenght)
  * Parameters: 
@@ -84,6 +95,10 @@ int length(nNode *list) {
     return lenght;
 }
 
+
+int isEmpty(nNode *list) {
+    return (list==NULL);
+}
 
 /* 
  * Function that removes all elements from the list
@@ -103,14 +118,6 @@ nNode* clear(nNode* list) {
 
 
 int main() {
-
-    nNode *head = allocateNode(1);
-    append(head, 2);
-    append(head, 3);
-    append(head, 5);
-    printf(" Appended 1,2,3,5\n   * list print: ");
-    print(head);
-    /* expected output: * list print: 1 2 3 5 */
 
     return 0;
 }
