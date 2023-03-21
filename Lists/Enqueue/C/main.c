@@ -70,38 +70,51 @@ nNode* clear(nNode* list) {
 
 /*
  * @param list list to top value in 
- * @return value first value of list 
+ * @return value value of last node 
 */
 int top(nNode *list) {
-    return list->value;
+    nNode *tmp = list;
+    while (tmp->next) 
+        tmp = tmp->next; 
+    return tmp->value;
 }
 
 
 /*
- * @param list list to delete first element from 
- * @return list with deleted first node 
+ * @param list list to delete last element from 
+ * @return list with deleted last node 
 */
-nNode* deleteFirst(nNode* list) {
+nNode* deleteLast(nNode* list) {
     if (list) {
-        nNode *tmp = list->next;
-        free(list);
-        return tmp;
+        nNode *tmp = list;
+        nNode *tmp1 = NULL;
+        while (tmp->next) {
+            tmp1 = tmp;
+            tmp = tmp->next; 
+        }
+        tmp1->next = NULL;
+        free(tmp);
     }
     return list;
 }
 
 
 /*
- * @param list list to pop first element from 
+ * @param list list to pop last element from 
  * @param pointer pointere where to store value of popped node  
- * @return list with deleted first node 
+ * @return list with deleted last node 
 */
 nNode* pop(nNode* list, int* pointer) {
     if (list) {
-        nNode *tmp = list->next;
-        *pointer = list->value;
-        free(list);
-        return tmp;
+        nNode *tmp = list;
+        nNode *tmp1 = NULL;
+        while (tmp->next) {
+            tmp1 = tmp;
+            tmp = tmp->next; 
+        }
+        *pointer = tmp->value;
+        tmp1->next = NULL;
+        free(tmp);
     }
     return list;
 }
@@ -137,8 +150,8 @@ int main() {
     printf(" \npush: 99   * list print: ");
     print(list);
     printf(" \ntop: %d ", top(list));
-    list = deleteFirst(list);
-    printf(" \ndeleteFirst  * list print: ");
+    list = deleteLast(list);
+    printf(" \ndeleteLast  * list print: ");
     print(list);
     int *poppedValue = (int*)malloc(sizeof(int));
     list = pop(list, poppedValue);

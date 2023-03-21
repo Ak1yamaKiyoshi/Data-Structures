@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <malloc.h>
 
 struct Node {
@@ -78,7 +78,7 @@ void link2(nNode *a, nNode *b) {
  * @return list pointer on last element
 */
 nNode* moveLast(nNode *list) {
-    while (list && list->next) list = list->next;
+    while (list != NULL && list->next) list = list->next;
     return list;
 }
 
@@ -371,25 +371,6 @@ int mergeLists(nNode *list, nNode *list2) {
 }
 
 
-/* 
- * Inserts second list in first 
- * @param *list base list, second list will be inserted to it 
- * @param *list2 list that will be inserted to list 
- * @param  index index in first list after which will be inserted list2 
-*/ 
-nNode* insertList(nNode *list, nNode *list2, int index) {
-    list = moveFirst(list);
-    list2 = moveFirst(list2);
-    if (list != list2) {
-        while (list != NULL && list2 != NULL && list2->next) {
-            list2 = list2->next; 
-            list = insert(list, list2->value, index);
-        }  
-    }
-    return list;
-}
-
-
 /*
  * delete node by index from list
  * @param *list list to delete from
@@ -429,34 +410,6 @@ nNode *removeFirst(nNode *list, int value) {
     return list;
 }
 
-
-/*
- * Pop first value of list 
- * @param list list to pop from 
-*/
-int popFirst (nNode* list) {
-    nNode *node = moveFirst(list);
-    if (node) {
-        int value = node->value;
-        delete(list, 0);
-        return value;
-    }
-}
-
-
-/*
- * Pop last value of list 
- * @param list list to pop from 
-*/
-int popLast (nNode* list) {
-    int len=length(list);
-    nNode *node = moveLast(list);
-    if (node) {
-        int value = node->value;
-        delete(list, len-1);
-        return value;
-    }
-}
 
 /*
  * Removes all elements from the list 
@@ -524,6 +477,45 @@ void printBackwards(nNode *list) {
 }
 
 
+/*
+ * use only if len > 1
+ * Pop first value of list 
+ * @param list list to pop first element from 
+ * @param pointer pointere where to store value of popped node  
+ * @return list with deleted first node 
+*/
+nNode* popFirst(nNode* list, int* pointer) {
+    if (list) {
+        nNode *tmp = moveFirst(list);
+        list = tmp->next;
+        if (list) *pointer = tmp->value;
+        if (list != NULL) list->prev = NULL;
+        free(tmp);
+    }
+    return list;
+}
+
+
+
+/*
+ * use only if len > 1
+ * Pop last element from list 
+ * @param list list to pop last element from 
+ * @param pointer pointere where to store value of popped node  
+ * @return list with deleted last node 
+*/
+nNode* popLast(nNode* list, int* pointer) {
+    if (list) {
+        nNode *tmp = moveLast(list);
+        list = tmp->prev;
+        if (list) *pointer = tmp->value;
+        if (list != NULL) list->next = NULL;
+        free(tmp);
+    }
+    return list;
+}
+
+
 void test() {
 
 
@@ -583,8 +575,31 @@ void test() {
     list = removeFirst(list, -1);
     list = removeFirst(list, 2);
     print(list); /* expected output -2 1*/
-    //printf("=%d =%d ", popFirst(list), popLast(list));
+    //list = append(list, 0);
+
+    int *num1 = (int*)malloc(sizeof(int));
+    int *num2 = (int*)malloc(sizeof(int));
+
+    printf("____|");
+    print(list); /* expected output -2 1*/
+    printf("|____");
+    
+    list = popFirst(list, num1);
+
+    printf("____|");
+    print(list); /* expected output -2 1*/
+    printf("|____");
+
+    list = popLast(list, num2);
+
+    printf("____|");
+    print(list); /* expected output -2 1*/
+    printf("|____");
+
+    printf(" PopFirst=%d PopLast=%d ", *num1,*num2 );
     list = clear(list);
+    free(num1);
+    free(num2);
 
 }
 
@@ -594,39 +609,29 @@ int main() {
 
     test();
 
+    /*
+    
+    */
+    //nNode*  insertList            (nNode *list, nNode *list2, int index) ;
+
     return 0;
 }
 
 
-
-//nNode*  allocateNode          (int value);
-//void    unlinkMiddleNode      (nNode *a, nNode *b, nNode *c);
-//void    link3                 (nNode *a, nNode *b, nNode *c);
-//void    link2                 (nNode *a, nNode *b) ;
-//nNode*  moveLast              (nNode *list) ;
-//nNode*  moveFirst             (nNode *list) ;
-//nNode*  moveToIndex           (nNode *list, int index);
-//nNode*  moveToValue           (nNode *list, int value) ;
-//void    swap                  (nNode *list, int index1, int index2) ;
-//int     length                (nNode *list);
-//int     indexOf               (nNode *list, int value);
-//nNode*  max                   (nNode *list);
-//nNode*  min                   (nNode *list);
-//int*    listToArray           (nNode *list);
-//int*    slice                 (nNode* list, int begin, int end);
-//void    reverse               (nNode *list) ;
-//nNode*  insertFirst           (nNode *list, int value);
-//nNode*  append                (nNode *list, int value) ;
-//nNode*  insert                (nNode *list, int value, int index) ;
-//int     insertLastFromArray   (nNode *list, int *array, int len);
-//int     insertFirstFromArray  (nNode *list, int *array, int len);
-//int     mergeLists            (nNode *list, nNode *list2) ;
-nNode*  insertList            (nNode *list, nNode *list2, int index) ;
-//nNode*  delete                (nNode* list, int index) ;
-//nNode*  removeFirst           (nNode *list, int value) ;
-int     popFirst              (nNode* list) ; // !!!!!!!!!!!!!!!!!!!!
-int     popLast               (nNode* list) ; // !!!!!!!!!!!!!!!!!!!!
-//nNode*  clear                 (nNode* list);
-//int     bubbleSort            (nNode *list);
-//void    print                 (nNode *list);
-//void    printBackwards        (nNode *list);
+/*
+ * Inserts second list in first 
+ * @param *list base list, second list will be inserted to it 
+ * @param *list2 list that will be inserted to list 
+ * @param  index index in first list after which will be inserted list2 
+*/ 
+nNode* insertList(nNode *list, nNode *list2, int index) {
+    list = moveFirst(list);
+    list2 = moveFirst(list2);
+    if (list != list2) {
+        while (list != NULL && list2 != NULL && list2->next) {
+            list2 = list2->next; 
+            list = insert(list, list2->value, index);
+        }  
+    }
+    return list;
+}

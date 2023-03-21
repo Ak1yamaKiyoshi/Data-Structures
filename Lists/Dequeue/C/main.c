@@ -22,13 +22,22 @@ nNode* allocateNode(int value, nNode* next) {
 }
 
 
-/*
- * @param value value to push in stack  
- * @param list stack to push node with given value in  
- * @return node list with pushed node 
-*/
-nNode* push(nNode *list, int value) {
-    return allocateNode(value, list);
+/* 
+ * Function appends new node at the end of list
+ * @param *list - pointer to head of the list
+ * @param value - value to be added
+ * @return 
+*/ 
+nNode* append(nNode *list, int value) {
+    nNode *newNode = allocateNode(value, NULL);
+    nNode *tmp = list;
+    if (tmp) { // if list is not empty 
+        while (tmp->next) // While next node is not null
+            tmp = tmp->next; // Move pointer to next node
+        tmp->next = newNode; // append new node to last node of the list
+    } else // if list is NULL
+        list = newNode;  // list will be newNode 
+    return list;
 }
 
 
@@ -122,19 +131,19 @@ void print(nNode *list) {
 int main() {
     nNode* list = NULL; 
 
-    list = push(list, 1);
-    printf(" \npush: 1   * list print: ");
+    list = append(list, 1);
+    printf(" \nappend: 1   * list print: ");
     print(list);
-    list = push(list, 1);
-    printf("\npush: 1   * list print: ");
+    list = append(list, 1);
+    printf("\nappend: 1   * list print: ");
     print(list);
-    list = push(list, 1);
-    printf(" \npush: 1   * list print: ");
+    list = append(list, 1);
+    printf(" \nappend: 1   * list print: ");
     print(list);
     printf(" \nlenth: %d ", length(list));
     printf(" \nempty: %d ", empty(list));
-    list = push(list, 99);
-    printf(" \npush: 99   * list print: ");
+    list = append(list, 99);
+    printf(" \nappend: 99   * list print: ");
     print(list);
     printf(" \ntop: %d ", top(list));
     list = deleteFirst(list);
