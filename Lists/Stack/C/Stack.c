@@ -33,17 +33,6 @@ nNode* push(nNode *list, int value) {
 
 
 /*
- * @param list list to find length of 
- * @return len length of list 
-*/
-int length(nNode *list) {
-    int len = 0;
-    for (;list; list=list->next, len++);
-    return len;
-}
-
-
-/*
  * @param list list to check if empty  
  * @return -1 if not empty, 0 if empty
 */
@@ -54,40 +43,11 @@ int empty(nNode* list) {
 
 
 /*
- * @param list list to clear
- * @return NULL
-*/
-nNode* clear(nNode* list) {
-    nNode* tmp = list;
-    while (list != NULL) {
-        tmp = list->next;
-        free(list);
-        list = tmp;
-    }
-    return list;
-}
-
-
-/*
  * @param list list to top value in 
  * @return value first value of list 
 */
 int top(nNode *list) {
     return list->value;
-}
-
-
-/*
- * @param list list to delete first element from 
- * @return list with deleted first node 
-*/
-nNode* deleteFirst(nNode* list) {
-    if (list) {
-        nNode *tmp = list->next;
-        free(list);
-        return tmp;
-    }
-    return list;
 }
 
 
@@ -108,14 +68,20 @@ nNode* pop(nNode* list, int* pointer) {
 
 
 
+
 /*
  * @param list list to print
+ * @return NULL
 */
-void print(nNode *list) {
-    while (list) { 
-        printf("%d ", list->value); 
-        list = list->next; 
+nNode* print(nNode* list) {
+    nNode* tmp = list;
+    while (list != NULL) {
+        tmp = list->next;
+        printf("%d ", list->value);
+        free(list);
+        list = tmp;
     }
+    return NULL;
 }
 
 
@@ -123,30 +89,10 @@ int main() {
     nNode* list = NULL; 
 
     list = push(list, 1);
-    printf(" \npush: 1   * list print: ");
-    print(list);
     list = push(list, 1);
-    printf("\npush: 1   * list print: ");
-    print(list);
     list = push(list, 1);
-    printf(" \npush: 1   * list print: ");
-    print(list);
-    printf(" \nlenth: %d ", length(list));
-    printf(" \nempty: %d ", empty(list));
     list = push(list, 99);
-    printf(" \npush: 99   * list print: ");
-    print(list);
-    printf(" \ntop: %d ", top(list));
-    list = deleteFirst(list);
-    printf(" \ndeleteFirst  * list print: ");
-    print(list);
-    int *poppedValue = (int*)malloc(sizeof(int));
-    list = pop(list, poppedValue);
-    printf(" \n pop: %d  * list print: ", *poppedValue);
-    print(list);
-    free(poppedValue);
-    list = clear(list);
-    printf(" \nlist cleared\n ");
+    list = print(list);
     print(list);
     
     return 0;
