@@ -15,11 +15,11 @@ void fillC(int **array, int rows, int cols) {
 
 // prints matrix
 void print(int **array, int rows, int cols) {
-    printf("\n Matrix %dx%d :", rows, cols);
+    printf("\n Matrix %dx%d ", rows, cols);
     for (int i=0; i<rows; i++) {
-        printf("\n");
+        printf("]\n");
         for (int j=0; j<cols; j++) {
-            printf(" %2d", array[i][j]);
+            printf(" %2d,", array[i][j]);
         }
     }
 }

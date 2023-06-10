@@ -14,17 +14,24 @@ int main() {
        *ptr = c++;
    }
 
+   
+   for (int *ptr = array, i=1; ptr < array+(rows)*(cols);i++, ptr++) {
+       printf(" %2d ", *ptr);
+        if (i % (rows) == 0)
+           printf("\n");
+   }
+
     int y=0;
     for (int i=0,j=rows;i<rows;i++,j--,y+=rows){
         int temp = array[i+y];
         array[i+y] = array[j+y-1];
         array[j+y-1] = temp;
     }
-
+ printf("\n"); printf("\n");
 
    for (int *ptr = array, i=1; ptr < array+(rows)*(cols);i++, ptr++) {
        printf(" %2d ", *ptr);
-       if (i % (rows) == 0)
+        if (i % (rows) == 0)
            printf("\n");
    }
 

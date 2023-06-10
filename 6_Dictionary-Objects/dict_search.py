@@ -1,7 +1,7 @@
 nestedDict = {
     1: {"a": "UMV"},
-    2: {"m": {"b": "LQZ", "d": 789}, "x": "123"},
-    3: {"c": "LVO"},
+    2: {"DDD": {"b": "DDD", "d": 789}, "x": "123"},
+    3: {"c": True},
     4: {"m": {"b": "DDD", "d": "BNF"}, "x": "123"}
 }
 
@@ -16,4 +16,4 @@ def find(nDict, target):
                 return str(out) + "." + str(e)
 
 # Driver code
-print(find(nestedDict, "DDD"))
+print(find(nestedDict, True)[::-1])

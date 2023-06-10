@@ -9,12 +9,12 @@ def multiply(array, rows, cols, array1, rows1, cols1):
         ]
         for y1 in range(rowsR): # 2
             for x1 in range(colsR): # 4
-                element = ""
+                element = "\""
                 for x in range(cols): # 3
-                    element += array[y1][x] + array1[x][x1] + "|"
+                    element += array[y1][x] + array1[x][x1] + "\", "
                 arrR[y1][x1] = element
         for y1 in range(rowsR):
-            print(" ")
+            print("")
             for x1 in range(colsR):
                 print(arrR[y1][x1], end=" ")
 arr = [
