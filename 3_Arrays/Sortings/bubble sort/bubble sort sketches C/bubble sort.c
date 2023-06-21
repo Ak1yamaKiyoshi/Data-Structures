@@ -2,22 +2,31 @@
 #include <malloc.h>
 
 
+
+void bubbleSort(int *arr, int len) {
+    for (int i = 0; i < len - 1; i++)
+        for (int j = 0; j < len - i - 1; j++)
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+}
+
+
 // void bubbleSort(int *arr, int len)
 void bubbleSort(int *arr, int len) {
-    int temp, flag=0;
     for (int i=0; i<len; i++) {
-        flag = 0;
-        for (int *j=arr; j<arr+len-1-i; j++) {
+        int flag = 0;
+        for (int *j=arr; j<arr+len-1-i; j++) 
             if (*j > *(j+1)) {
-                temp = *j;
+                int temp = *j;
                 *j = *(j+1);
                 *(j+1) = temp;
                 flag = 1;
             }
-        }
-        if (flag == 0) {
+        if (flag == 0) 
             break;
-        }
     }
 }
 

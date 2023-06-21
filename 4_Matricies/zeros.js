@@ -9,7 +9,8 @@ function fillASeq(array) {
   }
 }
 
-function findZeros(array, lim, counter = 0, x = 0, y = 0) {
+function findZeros(array, lim=undefined, counter = 0, x = 0, y = 0) {
+  if (!lim) lim =array.length
   if (array[y][x] == 0) counter++;
   if (x + 1 < lim) 
     counter = findZeros(array, lim, counter, x + 1, y);
@@ -21,4 +22,4 @@ function findZeros(array, lim, counter = 0, x = 0, y = 0) {
 var array = Array.from(Array(4), () => new Array(4));
 fillASeq(array);
 array[2][3] = 0;
-console.log(findZeros(array, 4, 0, 0, 0));
+console.log(findZeros(array, array.length, 0, 0, 0));

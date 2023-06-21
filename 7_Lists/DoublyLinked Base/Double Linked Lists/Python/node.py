@@ -10,7 +10,6 @@ class Node:
         return self.__value
 
     def set_value(self, value):
-        print("setter was called")
         self.__value = value
 
     @property
@@ -18,7 +17,6 @@ class Node:
         return self.__prev
 
     def set_prev(self, value):
-        print("setterwas called")
         self.__prev = value
 
     @property
@@ -26,7 +24,6 @@ class Node:
         return self.__next
 
     def set_next(self, value):
-        print("")
         self.__next = value
 
 

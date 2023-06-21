@@ -38,6 +38,7 @@ def transpose(matrix):
     return matrix
 
 def rotareLeft(matrix):
+    """ anti clockwise """
     for y in range(len(matrix)):
         for x in range(y, len(matrix[y])):
             matrix[y][x], matrix[x][y] = matrix[x][y], matrix[y][x]
